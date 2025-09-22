@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/ytj/carla-ros-bridge/src/carla_ros2_lane_keep/carla_ros2_lane_keep/models/LaneNet/weights/new/tusimple_lanenet.ckpt"
+all_model_checkpoint_paths: "/home/ytj/carla-ros-bridge/src/carla_ros2_lane_keep/carla_ros2_lane_keep/models/LaneNet/weights/new/tusimple_lanenet.ckpt"
