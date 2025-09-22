@@ -1,6 +1,7 @@
 # SimLKAS
 
-Code for **SimLKAS: a simulation-based framework for verification and validation of lane keeping assistance systems**.  
+Code for paper:  
+**SimLKAS: a simulation-based framework for verification and validation of lane keeping assistance systems**.  
 This repository accompanies the publication:  
 [https://doi.org/10.1080/15472450.2025.2559224](https://doi.org/10.1080/15472450.2025.2559224)
 
@@ -24,7 +25,7 @@ This repository includes the **LaneNet model** code, copied from
 ## Citation
 If you use this framework in your research, please cite:
 
-> Yang, T., Ding, Y., Li, K., Pan, Y., Qin, R., Yin, Z., & Hu, X. (2025).
-> SimLKAS: a simulation-based framework for verification and validation of lane keeping assistance systems. 
-> *Journal of Intelligent Transportation Systems,* 1-25.
+> Yang, T., Ding, Y., Li, K., Pan, Y., Qin, R., Yin, Z., & Hu, X. (2025).  
+> SimLKAS: a simulation-based framework for verification and validation of lane keeping assistance systems.  
+> *Journal of Intelligent Transportation Systems,* 1-25.  
 > [https://doi.org/10.1080/15472450.2025.2559224](https://doi.org/10.1080/15472450.2025.2559224)
