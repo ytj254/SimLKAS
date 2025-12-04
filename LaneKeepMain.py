@@ -133,7 +133,7 @@ def sim_run(lane_detector='legacy', target_speed=80, weather='Default', street_l
         detector = LegacyLaneDetector()
     else:
         print("Using LaneNet detector.")
-        from carla_ros2_lane_keep.models.laneNet_class import LaneNet
+        from lanenet.laneNet_class import LaneNet
         model = LaneNet()
         detector = LaneDetector(model)
 

@@ -188,7 +188,7 @@ class LaneDetector:
 def main():
     file = 'images/292.png'
     frame = cv2.imread(file)
-    from carla_ros2_lane_keep.models.laneNet_class import LaneNet
+    from lanenet.laneNet_class import LaneNet
     model = LaneNet()
     detector = LaneDetector(model)
     detector.lane_net_detect(frame)
@@ -200,7 +200,7 @@ if __name__ == '__main__':
     image = cv2.imread(file)
     # check_src_points(image)
 
-    from carla_ros2_lane_keep.models.laneNet_class import LaneNet
+    from lanenet.laneNet_class import LaneNet
     model = LaneNet()
     detector = LaneDetector(model)
     detector.lane_net_detect(image)
