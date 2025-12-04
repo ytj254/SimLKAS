@@ -5,6 +5,7 @@ __pycache__/
 # Environments / OS metadata
 .DS_Store
 Thumbs.db
+,vscode/
 
 # Local results/recordings
 *.mp4
