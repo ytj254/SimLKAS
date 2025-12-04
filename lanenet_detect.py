@@ -159,8 +159,8 @@ class LaneDetector:
             except Exception as e:
                 print(f"Error while drawing {side} line: {e}")
                 continue
-        # show_image('debug_image', debug_image)
-        show_video('debug_image', debug_image)
+        # Visualization is disabled in runtime to avoid extra windows; keep debug_image if needed.
+        # show_video('debug_image', debug_image)
         # return debug_image
 
         # # Visualize the binary thresholded images for each color

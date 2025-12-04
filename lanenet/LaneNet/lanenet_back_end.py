@@ -11,8 +11,8 @@ LaneNet backend branch which is mainly used for binary and instance segmentation
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 
-import lanenet_discriminative_loss
-import cnn_basenet
+from . import lanenet_discriminative_loss
+from . import cnn_basenet
 
 
 class LaneNetBackEnd(cnn_basenet.CNNBaseModel):

@@ -13,8 +13,8 @@ import collections
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 
-import cnn_basenet
-import parse_config_utils
+from . import cnn_basenet
+from . import parse_config_utils
 
 
 class _StemBlock(cnn_basenet.CNNBaseModel):
@@ -1097,4 +1097,3 @@ if __name__ == '__main__':
     ret = model.build_model(test_in_tensor, name='bisenetv2')
     for layer_name, layer_info in ret.items():
         print('layer name: {:s} shape: {}'.format(layer_name, layer_info['shape']))
-

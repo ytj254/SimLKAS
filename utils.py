@@ -2,6 +2,7 @@ import cv2
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import Dict, Tuple, Optional
 
 # Define the region of interest (source points)
 # These points should form a trapezoid around the lane in the input image
@@ -63,6 +64,63 @@ def warp_perspective_to_birdseye(image):
     birdseye_image = cv2.warpPerspective(image, M, output_size)
     # show_image('birdseye', birdseye_image)
     return birdseye_image, M
+
+def render_lane_overlay(
+        frame: np.ndarray,
+        lane_lines: Optional[Dict[str, Tuple]],
+        alpha: float = 0.6,
+):
+    """
+    Create an overlay of perceived lane markings on the raw frame.
+
+    The lane lines are defined in the bird's-eye-view coordinate frame and are
+    projected back into the camera view for display.
+    """
+    if lane_lines is None or frame is None:
+        return None
+
+    birdseye_image, transform_matrix = warp_perspective_to_birdseye(frame)
+    if transform_matrix is None:
+        return None
+
+    overlay = np.zeros_like(birdseye_image)
+    y_bottom = img_height - 1
+    y_top = 0
+
+    color_map = {
+        "left": (0, 0, 255),   # Red for left lane
+        "right": (0, 255, 0),  # Green for right lane
+    }
+
+    for side, params in lane_lines.items():
+        if params is None:
+            continue
+        # Some detectors return (None, None) when nothing is found; skip those
+        if len(params) < 4 or any(p is None for p in params):
+            continue
+        vx, vy, x0, y0 = params
+        if vx == 0:
+            continue  # Avoid vertical slope division
+        slope = vy / vx
+        intercept = y0 - slope * x0
+
+        x_bottom = int((y_bottom - intercept) / slope)
+        x_top = int((y_top - intercept) / slope)
+        x_bottom = max(0, min(img_width - 1, x_bottom))
+        x_top = max(0, min(img_width - 1, x_top))
+
+        color = color_map.get(side, (255, 255, 0))
+        cv2.line(overlay, (x_bottom, y_bottom), (x_top, y_top), color, 6)
+
+    try:
+        minv = np.linalg.inv(transform_matrix)
+    except np.linalg.LinAlgError:
+        return None
+
+    # Project the lane overlay back onto the camera frame
+    overlay_camera = cv2.warpPerspective(overlay, minv, (frame.shape[1], frame.shape[0]))
+    blended = cv2.addWeighted(frame, 1.0, overlay_camera, alpha, 0)
+    return blended
 
 def check_src_points(image):
     image_copy = image.copy()

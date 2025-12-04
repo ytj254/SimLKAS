@@ -12,8 +12,8 @@ import collections
 
 import tensorflow as tf
 
-import cnn_basenet
-import parse_config_utils
+from . import cnn_basenet
+from . import parse_config_utils
 
 
 class VGG16FCN(cnn_basenet.CNNBaseModel):

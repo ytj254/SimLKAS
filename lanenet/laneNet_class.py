@@ -3,25 +3,22 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import os
-import sys
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(ROOT_PATH,"LaneNet"))
 
-import lanenet
-#from lanenet_model import lanenet_postprocess
-import parse_config_utils
+# Use explicit package-relative imports to avoid clashing with the outer `lanenet` package
+from lanenet.LaneNet import lanenet as lanenet_model
+from lanenet.LaneNet import parse_config_utils
 
 
 class LaneNet(object):
     def __init__(self):
         self.cfg = parse_config_utils.lanenet_cfg
         self.input_tensor = tf.placeholder(dtype=tf.float32, shape=[1, 256, 512, 3], name='input_tensor')
-        self.net = lanenet.LaneNet(phase='test', cfg=self.cfg)
+        self.net = lanenet_model.LaneNet(phase='test', cfg=self.cfg)
         self.binary_seg_ret, self.instance_seg_ret = self.net.inference(input_tensor=self.input_tensor, name='LaneNet')
 
-
-        self.weights_path = os.path.join(ROOT_PATH,"LaneNet","weights/new/tusimple_lanenet.ckpt")
+        self.weights_path = self._resolve_weights_path()
 
         # Set sess configuration
         sess_config = tf.ConfigProto()
@@ -54,6 +51,29 @@ class LaneNet(object):
         #     print(f"Error restoring checkpoint: {e}")
 
         print("LaneNet Model Initilaized")
+
+    def _resolve_weights_path(self):
+        """Pick the first available checkpoint path to avoid missing file errors."""
+        checkpoint_file = os.path.join(ROOT_PATH, "LaneNet", "weights", "new", "checkpoint")
+        candidates = []
+        if os.path.isfile(checkpoint_file):
+            with open(checkpoint_file, "r") as f:
+                line = f.readline()
+                if "model_checkpoint_path" in line:
+                    # model_checkpoint_path: "path"
+                    ckpt_path = line.split(":", 1)[1].strip().strip('"').strip()
+                    candidates.append(ckpt_path)
+
+        # Fallback to repo-local weights if present
+        candidates.append(os.path.join(ROOT_PATH, "LaneNet", "weights", "new", "tusimple_lanenet.ckpt"))
+
+        for base in candidates:
+            if os.path.exists(base + ".index") or os.path.exists(base + ".meta") or os.path.exists(base):
+                return base
+
+        raise FileNotFoundError(
+            "LaneNet checkpoint not found. Checked: {}".format(", ".join(candidates))
+        )
 
     @staticmethod
     def preProcessing(image):

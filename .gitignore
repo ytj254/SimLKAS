@@ -1,0 +1,12 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+
+# Environments / OS metadata
+.DS_Store
+Thumbs.db
+
+# Local results/recordings
+*.mp4
+*.csv
+results/

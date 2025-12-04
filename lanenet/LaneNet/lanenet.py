@@ -11,9 +11,9 @@ Implement LaneNet Model
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 
-import lanenet_back_end
-import lanenet_front_end
-import cnn_basenet
+from . import lanenet_back_end
+from . import lanenet_front_end
+from . import cnn_basenet
 
 
 class LaneNet(cnn_basenet.CNNBaseModel):

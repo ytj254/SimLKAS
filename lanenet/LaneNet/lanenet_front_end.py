@@ -8,9 +8,9 @@
 """
 LaneNet frontend branch which is mainly used for feature extraction
 """
-import cnn_basenet
-import vgg16_based_fcn
-import bisenet_v2
+from . import cnn_basenet
+from . import vgg16_based_fcn
+from . import bisenet_v2
 
 
 class LaneNetFrondEnd(cnn_basenet.CNNBaseModel):

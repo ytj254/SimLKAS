@@ -8,7 +8,7 @@ from sympy.codegen.ast import continue_
 from lane_detect import LegacyLaneDetector
 from Controller import VehicleController
 from lanenet_detect import LaneDetector
-from utils import record_vehicle_data, save_to_csv
+from utils import record_vehicle_data, save_to_csv, render_lane_overlay
 from vehicle_hud import VehicleHUD, set_birdseye_map
 import itertools
 
@@ -196,6 +196,13 @@ def sim_run(lane_detector='legacy', target_speed=80, weather='Default', street_l
                 # print(line_parameters)
                 control = controller.run_step(target_speed, line_parameters)
                 vehicle.apply_control(control)
+
+                if veh_hud:
+                    overlay_frame = render_lane_overlay(latest_frame, line_parameters)
+                    vehicle_hud.update_lane_overlay(overlay_frame)
+            elif veh_hud:
+                vehicle_hud.update_lane_overlay(None)
+
             if veh_hud:
                 vehicle_hud.update()
             world.tick()
@@ -253,7 +260,7 @@ if __name__ == '__main__':
     # speeds = [30, 40, 50, 60]
     # for speed in speeds:
     settings = {
-        'lane_detector': 'legacy',
+        'lane_detector': 'lanenet', # legacy or lanenet
         'target_speed': 90,
         'weather': 'ClearNoon',
         'street_light': None, # on, off

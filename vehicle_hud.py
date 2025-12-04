@@ -2,6 +2,7 @@ import carla
 import pygame
 import numpy as np
 import cv2
+from typing import Optional
 
 
 class VehicleHUD:
@@ -16,6 +17,9 @@ class VehicleHUD:
 
         # Flags to manage Pygame initialization
         self.pygame_initialized = False
+
+        # Perception overlay (from lane detector)
+        self.lane_overlay: Optional[np.ndarray] = None
 
         # Video recording attributes
         self.recording = False
@@ -104,6 +108,14 @@ class VehicleHUD:
         self.camera = self.world.spawn_actor(self.camera_bp, self.camera_transform, attach_to=self.vehicle)
         self.camera.listen(lambda image: self._process_image(image))
 
+    def update_lane_overlay(self, overlay_frame: Optional[np.ndarray]):
+        """Receive the latest perception overlay (BGR) for display as an inset."""
+        if overlay_frame is None:
+            self.lane_overlay = None
+            return
+        # Convert BGR to RGB for Pygame surface creation
+        self.lane_overlay = overlay_frame[:, :, ::-1]
+
     def start_recording(self):
         """Start recording video."""
         if self.video_file:
@@ -154,6 +166,17 @@ class VehicleHUD:
             # Write to video file if recording
             if self.recording and self.video_writer:
                 self.video_writer.write(overlay_frame[:, :, ::-1])  # Convert back to BGR for OpenCV
+
+        # Draw lane perception inset if available
+        if self.lane_overlay is not None:
+            overlay_surface = pygame.surfarray.make_surface(self.lane_overlay.swapaxes(0, 1))
+            # Scale down to fit neatly in the HUD window
+            inset_width = int(self.width * 0.35)
+            inset_height = int(self.height * 0.35)
+            overlay_surface = pygame.transform.smoothscale(overlay_surface, (inset_width, inset_height))
+            inset_pos = (self.width - inset_width - 10, 10)
+            self.screen.blit(overlay_surface, inset_pos)
+            pygame.draw.rect(self.screen, (255, 255, 255), (*inset_pos, inset_width, inset_height), 2)
 
         pygame.display.flip()
         self.clock.tick(self.fps)
