@@ -20,14 +20,21 @@ SimLKAS provides a modular simulation framework to evaluate LKAS performance und
 - `results/`: default output directory for trajectory CSVs when logging is enabled.
 
 ## Quick start
-1) Ensure CARLA is running (default `localhost:2000`).
-2) Choose a config:
-   - Demo (single run, HUD on, no logging): `python run_sim.py -c configs/demo.json`
-   - Experiment (multi-run, logging on): `python run_sim.py -c configs/experiment.json`
-3) Adjust fields per `configs/experiment.schema.md`. Key options:
+1) Prereqs: a Python env with CARLA Python API, pygame, OpenCV, TensorFlow (only for `lanenet`), scikit-learn, numpy.
+2) Start a CARLA server (e.g., `CarlaUE4.sh -carla-port=2000`), default host/port `localhost:2000`.
+3) Run with a config:
+   - Demo (single run, HUD on, no logging):  
+     ```bash
+     python run_sim.py -c configs/demo.json
+     ```
+   - Experiment (multi-run, logging on):  
+     ```bash
+     python run_sim.py -c configs/experiment.json
+     ```
+4) To customize, edit a JSON per `configs/experiment.schema.md`. Key fields:
    - `experiment.mode`: `single` or `multi`
-   - `environment.weather`: presets in `configs/weather_presets.json` (e.g., `ClearNoon`, `MidFogNoon`, `HardRainNoon`, `ClearNight`, etc.)
-   - `lkas.detector`: `legacy` or `lanenet`
+   - `environment.weather`: preset name from `configs/weather_presets.json`
+   - `lkas.detector`: `legacy` (no TF) or `lanenet` (TF required)
    - `display.show_hud`: `true`/`false`
    - `logging.enabled`: `true`/`false`
 
