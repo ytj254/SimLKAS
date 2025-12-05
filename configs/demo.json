@@ -1,0 +1,25 @@
+{
+  "experiment": {
+    "mode": "single",
+    "name": "demo"
+  },
+  "simulation": {
+    "map": "Town04",
+    "distance_meters": 1000
+  },
+  "environment": {
+    "target_speed": 90,
+    "weather": "ClearNoon",
+    "street_light": null,
+    "vehicle_light": null
+  },
+  "lkas": {
+    "detector": "legacy"
+  },
+  "display": {
+    "show_hud": true
+  },
+  "logging": {
+    "enabled": false
+  }
+}

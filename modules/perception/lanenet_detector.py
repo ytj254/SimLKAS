@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from utils import warp_perspective_to_birdseye, show_video, show_image, plt_image
+from modules.utils import warp_perspective_to_birdseye, show_video, show_image, plt_image
 
 
 class LaneDetector:

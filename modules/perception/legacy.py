@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from sklearn.cluster import DBSCAN
-from utils import warp_perspective_to_birdseye, show_video, show_image, plt_image
+from modules.utils import warp_perspective_to_birdseye, show_video, show_image, plt_image
 import matplotlib.pyplot as plt
 
 

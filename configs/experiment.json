@@ -1,0 +1,48 @@
+{
+  "experiment": {
+    "mode": "multi",
+    "name": "weather_sensitivity",
+    "seeds": [1, 2, 3],
+    "conditions": [
+      {
+        "environment": {
+          "weather": "ClearNoon",
+          "street_light": null,
+          "vehicle_light": null
+        },
+        "lkas": {
+          "detector": "legacy"
+        }
+      },
+      {
+        "environment": {
+          "weather": "ClearNight",
+          "street_light": "off",
+          "vehicle_light": "HighBeam"
+        },
+        "lkas": {
+          "detector": "legacy"
+        }
+      }
+    ]
+  },
+  "simulation": {
+    "map": "Town04",
+    "distance_meters": 1000
+  },
+  "environment": {
+    "target_speed": 80,
+    "weather": "ClearNoon",
+    "street_light": null,
+    "vehicle_light": null
+  },
+  "lkas": {
+    "detector": "legacy"
+  },
+  "display": {
+    "show_hud": true
+  },
+  "logging": {
+    "enabled": true
+  }
+}

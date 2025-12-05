@@ -12,6 +12,34 @@ SimLKAS provides a modular simulation framework to evaluate LKAS performance und
 
 ---
 
+## Project layout
+- `run_sim.py`: single entry point to run demos or experiments from JSON configs.
+- `configs/`: example configs (`demo.json`, `experiment.json`) and `experiment.schema.md` documenting fields.
+- `modules/`: code for simulator (`simulator/runner.py`), controller, perception (legacy + LaneNet), HUD, and shared utils.
+- `lanenet/`: LaneNet model code and weights (testing/benchmark only).
+- `results/`: default output directory for trajectory CSVs when logging is enabled.
+
+## Quick start
+1) Ensure CARLA is running (default `localhost:2000`).
+2) Choose a config:
+   - Demo (single run, HUD on, no logging): `python run_sim.py -c configs/demo.json`
+   - Experiment (multi-run, logging on): `python run_sim.py -c configs/experiment.json`
+3) Adjust fields per `configs/experiment.schema.md`. Key options:
+   - `experiment.mode`: `single` or `multi`
+   - `environment.weather`: presets in `configs/weather_presets.json` (e.g., `ClearNoon`, `MidFogNoon`, `HardRainNoon`, `ClearNight`, etc.)
+   - `lkas.detector`: `legacy` or `lanenet`
+   - `display.show_hud`: `true`/`false`
+   - `logging.enabled`: `true`/`false`
+
+### Output naming
+When logging is enabled, trajectories are written to `results/` as:
+```
+<detector>_<map>_<weather>_<target_speed>_<street_light>_<vehicle_light>[_seedN]_trajectory.csv
+```
+`_seedN` is included only when a seed is supplied.
+
+---
+
 ## LaneNet Model Notice
 This repository includes the **LaneNet model** code, copied from  
 [MaybeShewill-CV/lanenet-lane-detection](https://github.com/MaybeShewill-CV/lanenet-lane-detection).  
